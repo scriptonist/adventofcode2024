@@ -1,3 +1,5 @@
+use rayon::prelude::*;
+
 fn main() {
     let input: Vec<i64> = include_str!("../input.txt")
         .split_whitespace()
@@ -7,19 +9,17 @@ fn main() {
     println!("{}", blink_and_find(&input, 75));
 }
 
-fn blink_and_find(input: &Vec<i64>, blinks: i32) -> u64 {
+fn blink_and_find(input: &Vec<i64>, blinks: i64) -> u64 {
+    let mut count: u64 = 0;
     let mut nums = input.clone();
-    for _ in 0..blinks {
-        let nums_iter = nums.clone();
-        let mut actual_idx = 0;
-        for n in nums_iter.iter() {
-            let new_n = apply_rule(n);
-            nums.splice(actual_idx..actual_idx+1, new_n.clone());
-            actual_idx += new_n.len();
-            // println!("{:?}", nums);
-        }
+    println!("{}", blinks);
+    for i in 0..blinks {
+        print!("{}.",i);
+        nums = nums.par_iter().flat_map(|n| apply_rule(n)).collect();
+        count = nums.len() as u64;
     }
-    nums.len() as u64
+    println!();
+    count
 }
 
 fn apply_rule(n: &i64) -> Vec<i64> {
