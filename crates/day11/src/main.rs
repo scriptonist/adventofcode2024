@@ -12,9 +12,9 @@ fn main() {
 fn blink_and_find(input: &Vec<i64>, blinks: i64) -> u64 {
     let mut count: u64 = 0;
     let mut nums = input.clone();
-    println!("{}", blinks);
+    // println!("{}", blinks);
     for i in 0..blinks {
-        print!("{}.",i);
+        // print!("{}.",i);
         nums = nums.par_iter().flat_map(|n| apply_rule(n)).collect();
         count = nums.len() as u64;
     }
